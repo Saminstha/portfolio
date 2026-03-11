@@ -1,15 +1,116 @@
 import { useEffect, useRef } from "react";
 
+const orbitSkills = [
+  { name: "Django", icon: "🎸", color: "#44B78B", angle: 0 },
+  { name: "Python", icon: "🐍", color: "#FFD43B", angle: 72 },
+  { name: "React", icon: "⚛️", color: "#61DAFB", angle: 144 },
+  { name: "Git", icon: "🔀", color: "#F05032", angle: 216 },
+  { name: "ML", icon: "🧠", color: "#f472b6", angle: 288 },
+];
+
+// Second inner orbit
+const innerSkills = [
+  { name: "HTML5", icon: "🌐", color: "#E44D26", angle: 30 },
+  { name: "CSS3", icon: "🎨", color: "#1572B6", angle: 150 },
+  { name: "JS", icon: "⚡", color: "#F7DF1E", angle: 270 },
+];
+
+function OrbitalRig() {
+  const rigRef = useRef(null);
+
+  useEffect(() => {
+    let frame;
+    let t = 0;
+
+    const animate = () => {
+      t += 0.003;
+      const rig = rigRef.current;
+      if (!rig) return;
+
+      // Outer orbit cards
+      const outerCards = rig.querySelectorAll(".orbit-card-outer");
+      outerCards.forEach((card, i) => {
+        const baseAngle = (i / outerCards.length) * Math.PI * 2;
+        const angle = baseAngle + t;
+        const rx = 190, ry = 145;
+        const x = Math.cos(angle) * rx;
+        const y = Math.sin(angle) * ry;
+        card.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        // Depth effect: scale and opacity based on Y
+        const depth = (Math.sin(angle) + 1) / 2;
+        card.style.opacity = 0.5 + depth * 0.5;
+        card.style.zIndex = Math.round(depth * 10);
+      });
+
+      // Inner orbit cards
+      const innerCards = rig.querySelectorAll(".orbit-card-inner");
+      innerCards.forEach((card, i) => {
+        const baseAngle = (i / innerCards.length) * Math.PI * 2;
+        const angle = baseAngle - t * 1.4; // counter-rotate
+        const rx = 105, ry = 80;
+        const x = Math.cos(angle) * rx;
+        const y = Math.sin(angle) * ry;
+        card.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        const depth = (Math.sin(angle) + 1) / 2;
+        card.style.opacity = 0.45 + depth * 0.55;
+        card.style.zIndex = Math.round(depth * 10);
+      });
+
+      frame = requestAnimationFrame(animate);
+    };
+
+    animate();
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <div className="orbital-rig" ref={rigRef}>
+      {/* Orbit rings */}
+      <div className="orbit-ring orbit-ring-outer" />
+      <div className="orbit-ring orbit-ring-inner" />
+
+      {/* Center core */}
+      <div className="orbit-core">
+        <div className="orbit-core-pulse" />
+        <span className="orbit-core-icon">💻</span>
+      </div>
+
+      {/* Outer orbit cards */}
+      {orbitSkills.map((skill, i) => (
+        <div
+          className="orbit-card orbit-card-outer"
+          key={`outer-${i}`}
+          style={{ "--accent": skill.color }}
+        >
+          <span className="orbit-card-icon">{skill.icon}</span>
+          <span className="orbit-card-name">{skill.name}</span>
+        </div>
+      ))}
+
+      {/* Inner orbit cards */}
+      {innerSkills.map((skill, i) => (
+        <div
+          className="orbit-card orbit-card-inner"
+          key={`inner-${i}`}
+          style={{ "--accent": skill.color }}
+        >
+          <span className="orbit-card-icon" style={{ fontSize: "1rem" }}>{skill.icon}</span>
+          <span className="orbit-card-name" style={{ fontSize: "0.6rem" }}>{skill.name}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Hero() {
   const containerRef = useRef(null);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    // Stagger children animations
     const children = el.querySelectorAll(".hero-animate");
     children.forEach((child, i) => {
-      child.style.animationDelay = `${i * 0.18}s`;
+      child.style.animationDelay = `${i * 0.15}s`;
     });
   }, []);
 
@@ -20,85 +121,56 @@ function Hero() {
 
         .hero-section {
           min-height: 100vh;
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
           align-items: center;
           position: relative;
           overflow: hidden;
           padding: 120px 10% 80px;
+          gap: 40px;
           font-family: 'DM Sans', sans-serif;
         }
 
-        /* Animated mesh background */
+        /* Background effects */
         .hero-bg {
           position: absolute;
           inset: 0;
           background:
-            radial-gradient(ellipse 80% 60% at 60% 40%, rgba(49, 130, 206, 0.12) 0%, transparent 70%),
-            radial-gradient(ellipse 50% 80% at 20% 80%, rgba(99, 179, 237, 0.07) 0%, transparent 60%),
-            radial-gradient(ellipse 40% 40% at 85% 10%, rgba(99, 179, 237, 0.08) 0%, transparent 50%);
+            radial-gradient(ellipse 60% 70% at 70% 40%, rgba(49,130,206,0.1) 0%, transparent 65%),
+            radial-gradient(ellipse 40% 50% at 20% 80%, rgba(99,179,237,0.06) 0%, transparent 55%);
           animation: hero-bg-shift 10s ease-in-out infinite alternate;
         }
 
         @keyframes hero-bg-shift {
-          0% { opacity: 0.8; transform: scale(1); }
-          100% { opacity: 1; transform: scale(1.03); }
+          0% { opacity: 0.8; }
+          100% { opacity: 1; }
         }
 
-        /* Grid dots pattern */
-        .hero-grid {
+        .hero-grid-dots {
           position: absolute;
           inset: 0;
-          background-image: radial-gradient(rgba(99,179,237,0.15) 1px, transparent 1px);
+          background-image: radial-gradient(rgba(99,179,237,0.12) 1px, transparent 1px);
           background-size: 36px 36px;
-          mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-          -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+          mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 10%, transparent 80%);
+          -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 10%, transparent 80%);
         }
 
-        /* Floating orbs */
-        .hero-orb {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
-          opacity: 0.18;
-          animation: orb-float 8s ease-in-out infinite;
-        }
-
-        .hero-orb-1 {
-          width: 400px; height: 400px;
-          background: #3182ce;
-          top: -80px; right: 5%;
-          animation-delay: 0s;
-        }
-
-        .hero-orb-2 {
-          width: 250px; height: 250px;
-          background: #63b3ed;
-          bottom: 10%; left: -60px;
-          animation-delay: -3s;
-          animation-duration: 11s;
-        }
-
-        @keyframes orb-float {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(20px, -30px) scale(1.05); }
-          66% { transform: translate(-15px, 20px) scale(0.97); }
-        }
-
+        /* ── Left content column ── */
         .hero-content {
           position: relative;
           z-index: 1;
-          max-width: 800px;
+          max-width: 600px;
         }
 
         .hero-tag {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          background: rgba(99, 179, 237, 0.1);
-          border: 1px solid rgba(99, 179, 237, 0.25);
+          background: rgba(99,179,237,0.1);
+          border: 1px solid rgba(99,179,237,0.25);
           padding: 6px 16px;
           border-radius: 100px;
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           color: #90cdf4;
           letter-spacing: 1.5px;
           text-transform: uppercase;
@@ -122,7 +194,7 @@ function Hero() {
         .hero-name {
           font-family: 'Syne', sans-serif;
           font-weight: 800;
-          font-size: clamp(3rem, 7vw, 5.5rem);
+          font-size: clamp(2.8rem, 5.5vw, 5rem);
           line-height: 1.02;
           letter-spacing: -2px;
           color: #fff;
@@ -136,26 +208,24 @@ function Hero() {
           background-clip: text;
         }
 
-        .hero-title {
+        .hero-role {
           font-family: 'Syne', sans-serif;
-          font-size: clamp(1.4rem, 3vw, 2.2rem);
+          font-size: clamp(1.2rem, 2.5vw, 1.9rem);
           font-weight: 600;
-          color: rgba(255,255,255,0.35);
+          color: rgba(255,255,255,0.3);
           letter-spacing: -0.5px;
           margin-bottom: 28px;
         }
 
-        .hero-title .highlight {
-          color: rgba(99, 179, 237, 0.7);
-        }
+        .hero-role .highlight { color: rgba(99,179,237,0.65); }
 
         .hero-desc {
-          font-size: 1.05rem;
-          color: rgba(255,255,255,0.5);
+          font-size: 1rem;
+          color: rgba(255,255,255,0.45);
           line-height: 1.8;
-          max-width: 560px;
+          max-width: 500px;
           font-weight: 300;
-          margin-bottom: 48px;
+          margin-bottom: 44px;
         }
 
         .hero-actions {
@@ -163,13 +233,14 @@ function Hero() {
           gap: 16px;
           flex-wrap: wrap;
           align-items: center;
+          margin-bottom: 56px;
         }
 
         .hero-btn-primary {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          padding: 14px 32px;
+          padding: 14px 30px;
           background: linear-gradient(135deg, #3182ce, #63b3ed);
           color: #fff;
           text-decoration: none;
@@ -177,27 +248,14 @@ function Hero() {
           font-family: 'DM Sans', sans-serif;
           font-weight: 500;
           font-size: 0.95rem;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 8px 32px rgba(49, 130, 206, 0.35);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .hero-btn-primary::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-          opacity: 0;
-          transition: opacity 0.3s;
+          transition: all 0.3s ease;
+          box-shadow: 0 8px 32px rgba(49,130,206,0.35);
         }
 
         .hero-btn-primary:hover {
           transform: translateY(-2px);
-          box-shadow: 0 16px 48px rgba(49, 130, 206, 0.5);
+          box-shadow: 0 16px 48px rgba(49,130,206,0.5);
         }
-
-        .hero-btn-primary:hover::after { opacity: 1; }
 
         .hero-btn-secondary {
           display: inline-flex;
@@ -216,37 +274,185 @@ function Hero() {
 
         .hero-btn-secondary:hover {
           color: #fff;
-          border-color: rgba(99, 179, 237, 0.4);
-          background: rgba(99, 179, 237, 0.06);
+          border-color: rgba(99,179,237,0.4);
+          background: rgba(99,179,237,0.06);
         }
 
-        .hero-arrow {
-          display: inline-block;
-          transition: transform 0.25s ease;
+        .hero-stats {
+          display: flex;
+          gap: 36px;
+          padding-top: 36px;
+          border-top: 1px solid rgba(255,255,255,0.06);
+          flex-wrap: wrap;
         }
 
-        .hero-btn-primary:hover .hero-arrow { transform: translate(3px, -1px); }
+        .hero-stat-value {
+          font-family: 'Syne', sans-serif;
+          font-size: 1.7rem;
+          font-weight: 700;
+          color: #63b3ed;
+          line-height: 1;
+        }
+
+        .hero-stat-label {
+          font-size: 0.75rem;
+          color: rgba(255,255,255,0.3);
+          letter-spacing: 0.5px;
+          margin-top: 4px;
+        }
+
+        /* Animate in */
+        .hero-animate {
+          opacity: 0;
+          transform: translateY(28px);
+          animation: hero-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes hero-in {
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Right orbital column ── */
+        .hero-visual {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 500px;
+        }
+
+        /* Orbital rig */
+        .orbital-rig {
+          position: relative;
+          width: 420px;
+          height: 420px;
+          flex-shrink: 0;
+        }
+
+        /* Elliptical orbit rings */
+        .orbit-ring {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          border: 1px solid rgba(99,179,237,0.1);
+          pointer-events: none;
+        }
+
+        .orbit-ring-outer {
+          width: 400px;
+          height: 302px;
+          border-style: dashed;
+        }
+
+        .orbit-ring-inner {
+          width: 222px;
+          height: 168px;
+          border-color: rgba(99,179,237,0.07);
+        }
+
+        /* Center core */
+        .orbit-core {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 72px;
+          height: 72px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(49,130,206,0.25) 0%, rgba(8,12,24,0.8) 70%);
+          border: 1px solid rgba(99,179,237,0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.8rem;
+          z-index: 5;
+          box-shadow: 0 0 32px rgba(99,179,237,0.2), inset 0 0 20px rgba(99,179,237,0.05);
+        }
+
+        .orbit-core-pulse {
+          position: absolute;
+          inset: -8px;
+          border-radius: 50%;
+          border: 1px solid rgba(99,179,237,0.2);
+          animation: core-pulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes core-pulse {
+          0%, 100% { transform: scale(1); opacity: 0.5; }
+          50% { transform: scale(1.15); opacity: 0.15; }
+        }
+
+        .orbit-core-icon {
+          font-size: 1.8rem;
+          position: relative;
+          z-index: 1;
+        }
+
+        /* Orbit cards */
+        .orbit-card {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 5px;
+          background: rgba(8,12,24,0.85);
+          border: 1px solid color-mix(in srgb, var(--accent) 30%, rgba(255,255,255,0.06));
+          border-radius: 14px;
+          padding: 10px 14px;
+          min-width: 64px;
+          backdrop-filter: blur(12px);
+          transition: opacity 0.1s linear;
+          cursor: default;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+          will-change: transform, opacity;
+        }
+
+        .orbit-card:hover {
+          background: rgba(20,30,55,0.95);
+          border-color: color-mix(in srgb, var(--accent) 60%, rgba(255,255,255,0.1));
+          box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 16px color-mix(in srgb, var(--accent) 20%, transparent);
+        }
+
+        .orbit-card-icon {
+          font-size: 1.3rem;
+          line-height: 1;
+        }
+
+        .orbit-card-name {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.65rem;
+          font-weight: 500;
+          color: rgba(255,255,255,0.7);
+          white-space: nowrap;
+          letter-spacing: 0.3px;
+        }
 
         /* Scroll indicator */
         .hero-scroll {
           position: absolute;
-          bottom: 40px;
+          bottom: 36px;
           left: 50%;
           transform: translateX(-50%);
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 8px;
-          color: rgba(255,255,255,0.25);
+          color: rgba(255,255,255,0.2);
           font-family: 'DM Sans', sans-serif;
-          font-size: 0.7rem;
-          letter-spacing: 2px;
+          font-size: 0.65rem;
+          letter-spacing: 2.5px;
           text-transform: uppercase;
+          z-index: 2;
         }
 
         .hero-scroll-line {
           width: 1px;
-          height: 48px;
+          height: 44px;
           background: linear-gradient(to bottom, rgba(99,179,237,0.5), transparent);
           animation: scroll-bounce 2s ease-in-out infinite;
         }
@@ -256,52 +462,49 @@ function Hero() {
           50% { transform: scaleY(0.6); opacity: 1; }
         }
 
-        /* Animate in */
-        .hero-animate {
-          opacity: 0;
-          transform: translateY(30px);
-          animation: hero-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        /* Responsive */
+        @media (max-width: 1024px) {
+          .hero-section {
+            grid-template-columns: 1fr;
+            padding-top: 140px;
+            text-align: center;
+          }
+
+          .hero-content { max-width: 100%; }
+          .hero-desc { max-width: 100%; }
+          .hero-tag { margin: 0 auto 28px; }
+          .hero-actions { justify-content: center; }
+          .hero-stats { justify-content: center; }
+
+          .hero-visual {
+            height: 360px;
+          }
+
+          .orbital-rig {
+            width: 320px;
+            height: 320px;
+          }
+
+          .orbit-ring-outer { width: 310px; height: 234px; }
+          .orbit-ring-inner { width: 172px; height: 130px; }
         }
 
-        @keyframes hero-in {
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Stats row */
-        .hero-stats {
-          display: flex;
-          gap: 40px;
-          margin-top: 60px;
-          padding-top: 40px;
-          border-top: 1px solid rgba(255,255,255,0.06);
-          flex-wrap: wrap;
-        }
-
-        .hero-stat-value {
-          font-family: 'Syne', sans-serif;
-          font-size: 1.8rem;
-          font-weight: 700;
-          color: #63b3ed;
-          line-height: 1;
-        }
-
-        .hero-stat-label {
-          font-size: 0.78rem;
-          color: rgba(255,255,255,0.35);
-          letter-spacing: 0.5px;
-          margin-top: 4px;
+        @media (max-width: 640px) {
+          .hero-visual { height: 300px; }
+          .orbital-rig { width: 280px; height: 280px; }
+          .orbit-ring-outer { width: 270px; height: 204px; }
+          .orbit-ring-inner { width: 150px; height: 114px; }
         }
       `}</style>
 
       <section id="home" className="hero-section" ref={containerRef}>
-        <div className="hero-bg"></div>
-        <div className="hero-grid"></div>
-        <div className="hero-orb hero-orb-1"></div>
-        <div className="hero-orb hero-orb-2"></div>
+        <div className="hero-bg" />
+        <div className="hero-grid-dots" />
 
+        {/* ── Left: Text content ── */}
         <div className="hero-content">
           <div className="hero-tag hero-animate">
-            <span className="hero-tag-dot"></span>
+            <span className="hero-tag-dot" />
             Available for opportunities
           </div>
 
@@ -310,7 +513,7 @@ function Hero() {
             <span className="accent">Samin Shrestha</span>
           </h1>
 
-          <p className="hero-title hero-animate">
+          <p className="hero-role hero-animate">
             <span className="highlight">Django</span> Web Developer
           </p>
 
@@ -322,7 +525,7 @@ function Hero() {
 
           <div className="hero-actions hero-animate">
             <a href="#projects" className="hero-btn-primary">
-              View My Work <span className="hero-arrow">↗</span>
+              View My Work ↗
             </a>
             <a href="#contact" className="hero-btn-secondary">
               Let's Connect
@@ -345,8 +548,13 @@ function Hero() {
           </div>
         </div>
 
+        {/* ── Right: Orbital visual ── */}
+        <div className="hero-visual hero-animate">
+          <OrbitalRig />
+        </div>
+
         <div className="hero-scroll">
-          <div className="hero-scroll-line"></div>
+          <div className="hero-scroll-line" />
           scroll
         </div>
       </section>

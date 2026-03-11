@@ -1,14 +1,41 @@
 import { useState, useEffect } from "react";
 
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
+  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  // Scroll glass effect
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // IntersectionObserver — auto-update active link as user scrolls
+  useEffect(() => {
+    const sections = ["home", "about", "projects", "skills", "contact"];
+    const observers = [];
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActive(id);
+        },
+        {
+          threshold: 0.3,
+          rootMargin: "-80px 0px 0px 0px",
+        }
+      );
+
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   const links = ["home", "about", "projects", "skills", "contact"];
@@ -55,7 +82,6 @@ function Navbar() {
           display: flex;
           align-items: center;
           gap: 10px;
-          position: relative;
         }
 
         .nav-logo-dot {
@@ -68,55 +94,92 @@ function Navbar() {
 
         @keyframes pulse-dot {
           0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.4); opacity: 0.7; }
+          50% { transform: scale(1.4); opacity: 0.6; }
         }
 
         .nav-links {
           list-style: none;
           display: flex;
-          gap: 8px;
+          gap: 4px;
           margin: 0;
           padding: 0;
         }
 
+        .nav-links li {
+          position: relative;
+        }
+
         .nav-links li a {
           text-decoration: none;
-          color: rgba(255,255,255,0.6);
+          color: rgba(255,255,255,0.5);
           font-size: 0.875rem;
           font-weight: 400;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.4px;
           text-transform: capitalize;
-          padding: 8px 16px;
+          padding: 8px 18px;
           border-radius: 100px;
-          transition: all 0.25s ease;
+          transition: color 0.25s ease, background 0.25s ease;
           position: relative;
-          display: block;
+          display: inline-block;
         }
 
-        .nav-links li a:hover,
+        /* Sliding underline */
+        .nav-links li a::after {
+          content: '';
+          position: absolute;
+          bottom: 4px;
+          left: 50%;
+          transform: translateX(-50%) scaleX(0);
+          width: calc(100% - 36px);
+          height: 2px;
+          background: linear-gradient(90deg, #3182ce, #63b3ed);
+          border-radius: 2px;
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          transform-origin: center;
+        }
+
+        .nav-links li a:hover {
+          color: rgba(255,255,255,0.85);
+        }
+
+        .nav-links li a:hover::after {
+          transform: translateX(-50%) scaleX(1);
+        }
+
+        /* Active state */
         .nav-links li a.active {
           color: #fff;
-          background: rgba(99, 179, 237, 0.12);
+          background: rgba(99, 179, 237, 0.1);
         }
 
-        .nav-links li a.active {
-          color: #63b3ed;
+        .nav-links li a.active::after {
+          transform: translateX(-50%) scaleX(1);
         }
 
-        .nav-cta {
-          padding: 9px 22px !important;
-          background: linear-gradient(135deg, #63b3ed, #3182ce) !important;
+        /* Contact CTA button */
+        .nav-links li a.nav-cta {
+          background: linear-gradient(135deg, #3182ce, #63b3ed);
           color: #fff !important;
-          border-radius: 100px !important;
-          font-weight: 500 !important;
+          font-weight: 500;
+          box-shadow: 0 4px 16px rgba(49,130,206,0.3);
+          transition: all 0.25s ease;
         }
 
-        .nav-cta:hover {
-          background: linear-gradient(135deg, #90cdf4, #63b3ed) !important;
+        .nav-links li a.nav-cta::after {
+          display: none;
+        }
+
+        .nav-links li a.nav-cta:hover {
           transform: translateY(-1px);
-          box-shadow: 0 8px 24px rgba(99, 179, 237, 0.3) !important;
+          box-shadow: 0 8px 24px rgba(49,130,206,0.45);
+          background: linear-gradient(135deg, #2b77cb, #90cdf4);
         }
 
+        .nav-links li a.nav-cta.active {
+          background: linear-gradient(135deg, #3182ce, #63b3ed);
+        }
+
+        /* Hamburger */
         .hamburger {
           display: none;
           flex-direction: column;
@@ -149,7 +212,7 @@ function Navbar() {
           flex-direction: column;
           gap: 4px;
           padding: 16px 24px 24px;
-          background: rgba(8, 12, 24, 0.95);
+          background: rgba(8, 12, 24, 0.97);
           backdrop-filter: blur(20px);
           border-top: 1px solid rgba(99, 179, 237, 0.1);
         }
@@ -158,16 +221,22 @@ function Navbar() {
 
         .mobile-menu a {
           text-decoration: none;
-          color: rgba(255,255,255,0.7);
+          color: rgba(255,255,255,0.6);
           font-size: 1rem;
           padding: 12px 16px;
           border-radius: 10px;
           transition: all 0.2s ease;
           text-transform: capitalize;
           font-family: 'DM Sans', sans-serif;
+          position: relative;
         }
 
-        .mobile-menu a:hover { background: rgba(99,179,237,0.1); color: #63b3ed; }
+        .mobile-menu a.active {
+          color: #63b3ed;
+          background: rgba(99,179,237,0.08);
+        }
+
+        .mobile-menu a:hover { background: rgba(99,179,237,0.07); color: #63b3ed; }
 
         @media (max-width: 768px) {
           .nav-links { display: none; }
@@ -202,15 +271,18 @@ function Navbar() {
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
           </button>
         </div>
 
         <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
           {links.map((link) => (
-            <a key={link} href={`#${link}`} onClick={() => setMenuOpen(false)}>
+            <a
+              key={link}
+              href={`#${link}`}
+              className={active === link ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
               {link}
             </a>
           ))}
