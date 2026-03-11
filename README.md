@@ -1,16 +1,84 @@
-# React + Vite
+# Personal Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is my personal developer portfolio built using **React and Vite**.  
+The website showcases my projects, skills, and contact information.
 
-Currently, two official plugins are available:
+## Live Website
+🌐 https://saminshrestha7.com.np
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Modern responsive design
+- Smooth navigation
+- Project showcase section
+- Skills and technologies section
+- Contact section
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Technologies Used
+
+- React.js
+- Vite
+- JavaScript
+- HTML5
+- CSS3
+
+---
+
+## Projects Included
+
+### Violence Detection System (VioLens)
+A real-time violence detection system using **CNN and LSTM models** to analyze CCTV footage and detect violent activities.
+
+### Instagram Clone
+A Django-based web application that allows users to:
+- Create posts
+- Follow other users
+- Like and comment on posts
+- View a personalized feed
+
+### Student Management System
+A web application for managing student records including adding, updating, and deleting student data.
+
+### Event Manager App
+A Django-based event management system where users can add events, mark them as attended, and view events by day, week, or month.
+
+---
+
+## Installation
+
+Clone the repository
+
+```
+git clone https://github.com/Saminstha/portfolio.git
+```
+
+Navigate to the project directory
+
+```
+cd portfolio
+```
+
+Install dependencies
+
+```
+npm install
+```
+
+Run the development server
+
+```
+npm run dev
+```
+
+---
+
+## Author
+
+**Samin Shrestha**
+
+- GitHub: https://github.com/Saminstha
+- Portfolio: https://saminshrestha7.com.np
