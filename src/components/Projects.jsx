@@ -67,7 +67,7 @@ const projects = [
     description:
       "An AI-powered surveillance system that detects violent activities in real-time using CNN and LSTM models. The system analyzes CCTV footage to identify suspicious behavior and trigger alerts, helping improve public safety and security monitoring.",
     tech: ["Python", "CNN", "LSTM", "Deep Learning", "OpenCV"],
-    github: "https://github.com/Saminstha",
+    github: "https://github.com/YOUR_USERNAME/violens",
     icon: "🛡️",
     color: "rgba(239,68,68,0.08)",
     accent: "#ef4444",
@@ -380,13 +380,6 @@ function Projects() {
                 </div>
               </div>
 
-              {project.ongoing && (
-                <div className="ongoing-badge">
-                  <span className="ongoing-dot" />
-                  In Progress
-                </div>
-              )}
-
               <div className="project-title-new">{project.title}</div>
               <div className="project-desc-new">{project.description}</div>
 
@@ -397,14 +390,21 @@ function Projects() {
               </div>
 
               <div className="project-footer">
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="project-link project-link-primary"
-                >
-                  <Github size={14} /> GitHub
-                </a>
+                {project.ongoing ? (
+                  <div className="ongoing-badge">
+                    <span className="ongoing-dot" />
+                    In Progress
+                  </div>
+                ) : (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-link project-link-primary"
+                  >
+                    <Github size={14} /> GitHub
+                  </a>
+                )}
               </div>
             </div>
           ))}
