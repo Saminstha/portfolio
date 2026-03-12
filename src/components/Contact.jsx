@@ -39,7 +39,6 @@ function Contact() {
   const socials = [
     { icon: <Github size={18} />, href: "https://github.com/Saminstha", label: "GitHub" },
     { icon: <Linkedin size={18} />, href: "https://linkedin.com/in/samin-shrestha-553567236", label: "LinkedIn" },
-    { icon: <Facebook size={18} />, href: "https://facebook.com/samiin.shrestha", label: "Facebook" },
     { icon: <Instagram size={18} />, href: "https://instagram.com/_samiin_10/", label: "Instagram" },
   ];
 
@@ -420,7 +419,7 @@ function Contact() {
                 <div className="contact-info-icon"><Phone size={15} /></div>
                 +977-9843473968
               </a>
-              <a href="mailto:saminshrestha7@gmail.com" className="contact-info-row">
+              <a href="https://mail.google.com/mail/?view=cm&to=saminshrestha7@gmail.com" target="_blank" rel="noopener noreferrer" className="contact-info-row">
                 <div className="contact-info-icon"><Mail size={15} /></div>
                 saminshrestha7@gmail.com
               </a>

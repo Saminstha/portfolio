@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 
 const orbitSkills = [
   { name: "Django", icon: "🎸", color: "#44B78B", angle: 0 },
-  { name: "Python", icon: "🐍", color: "#FFD43B", angle: 72 },
-  { name: "React", icon: "⚛️", color: "#61DAFB", angle: 144 },
-  { name: "Git", icon: "🔀", color: "#F05032", angle: 216 },
-  { name: "ML", icon: "🧠", color: "#f472b6", angle: 288 },
+  { name: "Python", icon: "🐍", color: "#FFD43B", angle: 60 },
+  { name: "React", icon: "⚛️", color: "#61DAFB", angle: 120 },
+  { name: "YOLO", icon: "👁️", color: "#a78bfa", angle: 180 },
+  { name: "Git", icon: "🔀", color: "#F05032", angle: 240 },
+  { name: "ML", icon: "🧠", color: "#f472b6", angle: 300 },
 ];
 
 // Second inner orbit
@@ -441,25 +442,76 @@ function Hero() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px;
-          color: rgba(255,255,255,0.2);
-          font-family: 'DM Sans', sans-serif;
-          font-size: 0.65rem;
-          letter-spacing: 2.5px;
-          text-transform: uppercase;
+          gap: 10px;
           z-index: 2;
+          animation: scroll-fade-in 1.2s ease 1.8s both;
         }
 
-        .hero-scroll-line {
-          width: 1px;
-          height: 44px;
-          background: linear-gradient(to bottom, rgba(99,179,237,0.5), transparent);
-          animation: scroll-bounce 2s ease-in-out infinite;
+        @keyframes scroll-fade-in {
+          from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+          to   { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        @keyframes scroll-bounce {
-          0%, 100% { transform: scaleY(1); opacity: 0.5; }
-          50% { transform: scaleY(0.6); opacity: 1; }
+        /* Mouse body */
+        .hero-mouse {
+          width: 24px;
+          height: 38px;
+          border: 2px solid rgba(99,179,237,0.45);
+          border-radius: 12px;
+          position: relative;
+          display: flex;
+          justify-content: center;
+          padding-top: 6px;
+          box-shadow: 0 0 12px rgba(99,179,237,0.15), inset 0 0 8px rgba(99,179,237,0.04);
+          animation: mouse-glow 2.4s ease-in-out infinite;
+        }
+
+        @keyframes mouse-glow {
+          0%, 100% { border-color: rgba(99,179,237,0.35); box-shadow: 0 0 10px rgba(99,179,237,0.1); }
+          50%       { border-color: rgba(99,179,237,0.7);  box-shadow: 0 0 18px rgba(99,179,237,0.28); }
+        }
+
+        /* Scrolling wheel dot */
+        .hero-mouse-wheel {
+          width: 3px;
+          height: 7px;
+          background: #63b3ed;
+          border-radius: 2px;
+          animation: wheel-scroll 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes wheel-scroll {
+          0%   { transform: translateY(0);   opacity: 1; }
+          60%  { transform: translateY(10px); opacity: 0; }
+          61%  { transform: translateY(0);   opacity: 0; }
+          100% { transform: translateY(0);   opacity: 1; }
+        }
+
+        /* Chevron arrows */
+        .hero-scroll-arrows {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 2px;
+        }
+
+        .hero-scroll-arrows span {
+          display: block;
+          width: 8px;
+          height: 8px;
+          border-right: 1.5px solid rgba(99,179,237,0.5);
+          border-bottom: 1.5px solid rgba(99,179,237,0.5);
+          transform: rotate(45deg);
+          animation: arrow-cascade 1.6s ease-in-out infinite;
+        }
+
+        .hero-scroll-arrows span:nth-child(1) { animation-delay: 0s;    opacity: 0.3; }
+        .hero-scroll-arrows span:nth-child(2) { animation-delay: 0.2s;  opacity: 0.6; }
+        .hero-scroll-arrows span:nth-child(3) { animation-delay: 0.4s;  opacity: 1;   }
+
+        @keyframes arrow-cascade {
+          0%, 100% { transform: rotate(45deg) translateY(0);   opacity: inherit; }
+          50%       { transform: rotate(45deg) translateY(4px); opacity: 1; }
         }
 
         /* Responsive */
@@ -538,7 +590,7 @@ function Hero() {
               <div className="hero-stat-label">Years Learning</div>
             </div>
             <div>
-              <div className="hero-stat-value">5+</div>
+              <div className="hero-stat-value">6+</div>
               <div className="hero-stat-label">Projects Built</div>
             </div>
             <div>
@@ -554,8 +606,12 @@ function Hero() {
         </div>
 
         <div className="hero-scroll">
-          <div className="hero-scroll-line" />
-          scroll
+          <div className="hero-mouse">
+            <div className="hero-mouse-wheel" />
+          </div>
+          <div className="hero-scroll-arrows">
+            <span /><span /><span />
+          </div>
         </div>
       </section>
     </>

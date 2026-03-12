@@ -67,7 +67,7 @@ const projects = [
     description:
       "An AI-powered surveillance system that detects violent activities in real-time using CNN and LSTM models. The system analyzes CCTV footage to identify suspicious behavior and trigger alerts, helping improve public safety and security monitoring.",
     tech: ["Python", "CNN", "LSTM", "Deep Learning", "OpenCV"],
-    github: "https://github.com/YOUR_USERNAME/violens",
+    github: "https://github.com/Saminstha",
     icon: "🛡️",
     color: "rgba(239,68,68,0.08)",
     accent: "#ef4444",
