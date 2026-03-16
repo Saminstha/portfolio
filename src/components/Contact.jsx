@@ -487,7 +487,7 @@ function Contact() {
 
         <div className="contact-footer">
           <div className="contact-footer-text">
-            © 2025 <span>Samin Shrestha</span>. Designed & Built with ❤️
+            © 2025 <span>Samin Shrestha</span>. 
           </div>
           <div className="contact-footer-text">
             Computer Engineering Student · <span>Django Developer</span>
