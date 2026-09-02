@@ -2,6 +2,26 @@ import { Github } from "lucide-react";
 
 const projects = [
   {
+    title: "Student Management System",
+    category: "Full-Stack · Management",
+    description:
+      "A full-stack student management system built with the MERN stack that allows administrators to manage student records, courses, and related academic information through a RESTful API with data validation and MongoDB integration.",
+    tech: [
+      "MongoDB",
+      "Express.js",
+      "React",
+      "Node.js",
+      "TypeScript",
+      "Mongoose",
+    ],
+    github: "https://github.com/Saminstha/student-manager-system",
+    icon: "🎓",
+    color: "rgba(52,211,153,0.08)",
+    accent: "#34d399",
+    ongoing: false,
+  },
+
+  {
     title: "Automatic Number Plate Recognition",
     category: "Computer Vision · AI",
     description:
@@ -25,18 +45,7 @@ const projects = [
     accent: "#9a78ff",
     ongoing: false,
   },
-  {
-    title: "Student Management System",
-    category: "Web App · Backend",
-    description:
-      "A web-based system developed to manage student records, including adding, updating, and tracking academic information in an organized database-driven platform.",
-    tech: ["Django", "Python", "SQLite", "HTML/CSS"],
-    github: "https://github.com/Saminstha/student-management-system",
-    icon: "🎓",
-    color: "rgba(72,187,120,0.08)",
-    accent: "#48bb78",
-    ongoing: false,
-  },
+
   {
     title: "News Portal Web Application",
     category: "Full-Stack · CMS",
@@ -71,7 +80,7 @@ const projects = [
     icon: "🛡️",
     color: "rgba(239,68,68,0.08)",
     accent: "#ef4444",
-    ongoing: true,
+    ongoing: false,
   },
 ];
 
@@ -385,7 +394,9 @@ function Projects() {
 
               <div className="project-tech-stack">
                 {project.tech.map((t, j) => (
-                  <span className="project-tag" key={j}>{t}</span>
+                  <span className="project-tag" key={j}>
+                    {t}
+                  </span>
                 ))}
               </div>
 

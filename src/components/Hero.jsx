@@ -1,19 +1,21 @@
 import { useEffect, useRef } from "react";
 
 const orbitSkills = [
-  { name: "Django", icon: "🎸", color: "#44B78B", angle: 0 },
-  { name: "Python", icon: "🐍", color: "#FFD43B", angle: 60 },
-  { name: "React", icon: "⚛️", color: "#61DAFB", angle: 120 },
-  { name: "YOLO", icon: "👁️", color: "#a78bfa", angle: 180 },
-  { name: "Git", icon: "🔀", color: "#F05032", angle: 240 },
-  { name: "ML", icon: "🧠", color: "#f472b6", angle: 300 },
+  { name: "React", icon: "⚛️", color: "#61DAFB", angle: 0 },
+  { name: "Node.js", icon: "🟢", color: "#339933", angle: 60 },
+  { name: "Express", icon: "🚂", color: "#ffffff", angle: 120 },
+  { name: "MongoDB", icon: "🍃", color: "#47A248", angle: 180 },
+  { name: "Django", icon: "🎸", color: "#44B78B", angle: 240 },
+  { name: "Python", icon: "🐍", color: "#FFD43B", angle: 300 },
 ];
 
 // Second inner orbit
 const innerSkills = [
-  { name: "HTML5", icon: "🌐", color: "#E44D26", angle: 30 },
-  { name: "CSS3", icon: "🎨", color: "#1572B6", angle: 150 },
-  { name: "JS", icon: "⚡", color: "#F7DF1E", angle: 270 },
+  { name: "TypeScript", icon: "🔷", color: "#3178C6", angle: 0 },
+  { name: "REST API", icon: "🔗", color: "#a78bfa", angle: 72 },
+  { name: "Mongoose", icon: "🍃", color: "#880000", angle: 144 },
+  { name: "Git", icon: "🔀", color: "#F05032", angle: 216 },
+  { name: "TensorFlow", icon: "🧠", color: "#FF6F00", angle: 288 },
 ];
 
 function OrbitalRig() {
@@ -33,7 +35,8 @@ function OrbitalRig() {
       outerCards.forEach((card, i) => {
         const baseAngle = (i / outerCards.length) * Math.PI * 2;
         const angle = baseAngle + t;
-        const rx = 190, ry = 145;
+        const rx = 190,
+          ry = 145;
         const x = Math.cos(angle) * rx;
         const y = Math.sin(angle) * ry;
         card.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
@@ -48,7 +51,8 @@ function OrbitalRig() {
       innerCards.forEach((card, i) => {
         const baseAngle = (i / innerCards.length) * Math.PI * 2;
         const angle = baseAngle - t * 1.4; // counter-rotate
-        const rx = 105, ry = 80;
+        const rx = 105,
+          ry = 80;
         const x = Math.cos(angle) * rx;
         const y = Math.sin(angle) * ry;
         card.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
@@ -95,8 +99,12 @@ function OrbitalRig() {
           key={`inner-${i}`}
           style={{ "--accent": skill.color }}
         >
-          <span className="orbit-card-icon" style={{ fontSize: "1rem" }}>{skill.icon}</span>
-          <span className="orbit-card-name" style={{ fontSize: "0.6rem" }}>{skill.name}</span>
+          <span className="orbit-card-icon" style={{ fontSize: "1rem" }}>
+            {skill.icon}
+          </span>
+          <span className="orbit-card-name" style={{ fontSize: "0.6rem" }}>
+            {skill.name}
+          </span>
         </div>
       ))}
     </div>
@@ -561,18 +569,21 @@ function Hero() {
           </div>
 
           <h1 className="hero-name hero-animate">
-            Hi, I'm<br />
+            Hi, I'm
+            <br />
             <span className="accent">Samin Shrestha</span>
           </h1>
 
           <p className="hero-role hero-animate">
-            <span className="highlight">Django</span> Web Developer
+            <span className="highlight">Full-Stack</span> Developer
           </p>
 
           <p className="hero-desc hero-animate">
-            Computer Engineering student and passionate backend developer building
-            modern, scalable web applications. I turn ideas into real-world solutions
-            with clean code and thoughtful design.
+            Computer Engineering graduate and full-stack developer passionate
+            about building modern, scalable web applications and intelligent
+            solutions. I work across the MERN and Django ecosystems while
+            exploring AI and machine learning to turn ideas into real-world
+            applications.
           </p>
 
           <div className="hero-actions hero-animate">
@@ -586,16 +597,18 @@ function Hero() {
 
           <div className="hero-stats hero-animate">
             <div>
-              <div className="hero-stat-value">3+</div>
-              <div className="hero-stat-label">Years Learning</div>
-            </div>
-            <div>
               <div className="hero-stat-value">6+</div>
               <div className="hero-stat-label">Projects Built</div>
             </div>
+
+            <div>
+              <div className="hero-stat-value">MERN</div>
+              <div className="hero-stat-label">Full-Stack Development</div>
+            </div>
+
             <div>
               <div className="hero-stat-value">AI</div>
-              <div className="hero-stat-label">& ML Experience</div>
+              <div className="hero-stat-label">& ML Projects</div>
             </div>
           </div>
         </div>
@@ -610,7 +623,9 @@ function Hero() {
             <div className="hero-mouse-wheel" />
           </div>
           <div className="hero-scroll-arrows">
-            <span /><span /><span />
+            <span />
+            <span />
+            <span />
           </div>
         </div>
       </section>
